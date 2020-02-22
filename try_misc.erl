@@ -11,11 +11,6 @@ try_format() ->
 factorial(1) -> 1;
 factorial(N) -> N * factorial(N - 1).
 
--spec fib(pos_integer()) -> pos_integer().
-fib(1) -> 1;
-fib(2) -> 1;
-fib(N) -> fib(N - 1) + fib(N - 2).
-
 -spec cnt([any()]) -> pos_integer().
 cnt(S) -> cnt(S, 0).
 
