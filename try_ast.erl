@@ -1,4 +1,4 @@
-%% This is from: http://blog.stenmans.org/theBeamBook/
+%% This is based on: http://blog.stenmans.org/theBeamBook/
 %% Only Leading JSON is parsed.
 
 -module(try_ast).
