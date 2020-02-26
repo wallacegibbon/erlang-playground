@@ -6,7 +6,7 @@
 
 parse_transform(AST, _Options) ->
     R = json(AST, []),
-    io:format("~p~n~n~p~n", [AST, R]),
+    io:format("AST: ~p~n~nResult AST:~p~n", [AST, R]),
     R.
 
 -define(FUNCTION(Clauses), {function, Label, Name, Arity, Clauses}).
@@ -33,9 +33,7 @@ json_code([Other | MoreCode]) ->
 json_code([]) ->
     [].
 
-%% JSON Object, [{}] | [{Label, Term}]
-parse_json({tuple, Line, []}) ->
-    {cons, Line, {tuple, Line, []}};
+%% JSON Object, [] | [{Label, Term}]
 parse_json({tuple, Line, Fields}) ->
     parse_json_fields(Fields, Line);
 
@@ -69,12 +67,10 @@ parse_json({nil, Line}) ->
     {nil, Line}.
 
 
-parse_json_fields([{remote, Line, Key, Value} | Rest], _) ->
-    {cons, Line,
-     {tuple, Line, [parse_json(Key), parse_json(Value)]},
+parse_json_fields([{remote, L1, Key, Value} | Rest], Line) ->
+    {cons, L1, {tuple, L1, [parse_json(Key), parse_json(Value)]},
      parse_json_fields(Rest, Line)};
 
 parse_json_fields([], L) ->
     {nil, L}.
-
 

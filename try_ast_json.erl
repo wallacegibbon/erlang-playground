@@ -2,9 +2,9 @@
 
 -compile({parse_transform, try_ast}).
 
--export([test/1]).
+-export([test1/1, test2/0]).
 
-test(V) ->
+test1(V) ->
     <<{{
        "name": "wallace gibbon",
        "data": {
@@ -13,4 +13,8 @@ test(V) ->
        },
        "attr": "asdfasdfasdf"
       }}>>.
+
+test2() ->
+    [],
+    <<{{}}>>.
 
