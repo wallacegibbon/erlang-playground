@@ -39,18 +39,18 @@ parse_chunks(Chunks) ->
     parse_chunks(Chunks, []).
 
 parse_chunks([{"Atom", _Size, <<_Numberofatoms:32/integer, Atoms/binary>>}
-              | Rest], Acc) ->
+	      | Rest], Acc) ->
     parse_chunks(Rest, [{atoms, parse_atoms(Atoms)} | Acc]);
 
 parse_chunks([{"AtU8", Size, Atoms} | Rest], Acc) ->
     parse_chunks([{"Atom", Size, Atoms} | Rest], Acc);
 
 parse_chunks([{"ExpT", _Size, <<_Numberofentries:32/integer, Exports/binary>>}
-              | Rest], Acc) ->
+	      | Rest], Acc) ->
     parse_chunks(Rest, [{exports, parse_exports(Exports)} | Acc]);
 
 parse_chunks([{"Code", Size, <<Subsize:32/integer, Chunk/binary>>} | Rest],
-             Acc) ->
+	     Acc) ->
     <<Info:Subsize/binary, Code/binary>> = Chunk,
     %% 8 is size of CunkSize & Subsize
     OpcodeSize = Size - Subsize - 8,
@@ -71,8 +71,8 @@ parse_chunks([{"CInf", Size, Chunk} | Rest], Acc) ->
     parse_chunks(Rest, [{compile_info, CInfo} | Acc]);
 
 parse_chunks([{"LitT", _Chunksize,
-               <<_CompressedTableSize:32, Compressed/binary>>} | Rest],
-             Acc) ->
+	       <<_CompressedTableSize:32, Compressed/binary>>} | Rest],
+	     Acc) ->
     <<_NumLiterals:32, Table/binary>> = zlib:uncompress(Compressed),
     Literals = parse_literals(Table),
     parse_chunks(Rest, [{literals, Literals} | Acc]);
@@ -97,19 +97,19 @@ parse_atoms(_Alignment) ->
     [].
 
 parse_exports(<<Function:32/integer, Arity:32/integer, Label:32/integer,
-                Rest/binary>>) ->
+		Rest/binary>>) ->
     [{Function, Arity, Label} | parse_exports(Rest)];
 
 parse_exports(_Alignment) ->
     [].
 
 parse_code_info(<<Instructionset:32/integer, OpcodeMax:32/integer,
-                  NumberOfLabels:32/integer, NumberOfFunctions:32/integer,
-                  Rest/binary>>) ->
+		  NumberOfLabels:32/integer, NumberOfFunctions:32/integer,
+		  Rest/binary>>) ->
     Left = case Rest of
-               <<>> -> [];
-               _ -> [{newinfo, Rest}]
-           end,
+	       <<>> -> [];
+	       _ -> [{newinfo, Rest}]
+	   end,
     [{instructionset, Instructionset},
      {opcodemax, OpcodeMax},
      {numoflabels, NumberOfLabels},

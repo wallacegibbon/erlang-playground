@@ -24,7 +24,7 @@ json_clauses([]) ->
     [].
 
 -define(JSON(Json), {bin, _, [{bin_element, _,
-                               {tuple, _, [Json]}, _, _}]}).
+			       {tuple, _, [Json]}, _, _}]}).
 
 json_code([?JSON(Json) | MoreCode]) ->
     [parse_json(Json) | json_code(MoreCode)];
