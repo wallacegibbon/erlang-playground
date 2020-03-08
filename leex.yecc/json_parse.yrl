@@ -21,7 +21,7 @@ pairs -> pair ',' pairs : maps:merge('$1', '$3').
 pair -> string ':' value : #{get_val('$1') => '$3'}.
 
 array -> '[' ']' : {}.
-array -> '[' values ']' : list_to_tuple('$2').
+array -> '[' values ']' : '$2'.
 
 values -> value : ['$1'].
 values -> value ',' values : ['$1' | '$3'].

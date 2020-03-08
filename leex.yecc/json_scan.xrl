@@ -14,7 +14,7 @@ Rules.
 
 {Quote}{Quote} : {token, {string, TokenLine, ""}}.
 {Quote}({EscapedChar}|({UnescapedChar})|({Unicode}))+{Quote} :
-	{token, {string, TokenLine, drop_quotes(TokenChars)}}.
+    {token, {string, TokenLine, drop_quotes(TokenChars)}}.
 
 null : {token, {null, TokenLine}}.
 true : {token, {true, TokenLine}}.
@@ -23,10 +23,10 @@ false : {token, {false, TokenLine}}.
 {Space} : skip_token.
 
 -?{Digit1to9}+{Digit}*\.{Digit}+((E|e)(\+|\-)?{Digit}+)? :
-	{token, {number, TokenLine, list_to_float(TokenChars)}}.
+    {token, {number, TokenLine, list_to_float(TokenChars)}}.
 
 -?{Digit1to9}+{Digit}* :
-	{token, {number, TokenLine, list_to_integer(TokenChars) + 0.0}}.
+    {token, {number, TokenLine, list_to_integer(TokenChars) + 0.0}}.
 
 Erlang code.
 
