@@ -3,5 +3,7 @@
 *.beam
 *.dis
 *.core
+*.P
 *.E
 *.S
+*.dot
