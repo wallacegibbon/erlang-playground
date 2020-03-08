@@ -26,7 +26,6 @@ array -> '[' values ']' : '$2'.
 values -> value : ['$1'].
 values -> value ',' values : ['$1' | '$3'].
 
-
 Erlang code.
 
 get_val({_, _, Val}) -> Val;
