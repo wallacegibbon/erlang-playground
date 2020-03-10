@@ -10,10 +10,10 @@ calc(N, In, F) -> case F() of
 		      false -> calc(N - 1, In, F)
 		  end.
 
-calc_rand() ->
+pi_calc() ->
     {X, Y} = {rand:uniform(), rand:uniform()},
     math:sqrt(X * X + Y * Y) < 1.
 
 pi(N) ->
-    calc(N, fun calc_rand/0) * 4.
+    calc(N, fun pi_calc/0) * 4.
 
