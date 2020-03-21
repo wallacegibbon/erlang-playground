@@ -5,12 +5,12 @@ Terminals number string true false null '[' ']' '{' '}' ',' ':'.
 Rootsymbol value.
 
 value -> object : maps:from_list('$1').
-value -> array : '$1'.
+value -> array  : '$1'.
 value -> number : get_val('$1').
 value -> string : get_val('$1').
-value -> 'true' : get_val('$1').
-value -> 'false' : get_val('$1').
-value -> 'null' : get_val('$1').
+value -> true   : get_val('$1').
+value -> false  : get_val('$1').
+value -> null   : get_val('$1').
 
 object -> '{' '}' : [].
 object -> '{' pairs '}' : '$2'.
