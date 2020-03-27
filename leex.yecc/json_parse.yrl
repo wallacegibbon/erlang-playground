@@ -28,6 +28,8 @@ values -> value ',' values : ['$1' | '$3'].
 
 Erlang code.
 
-get_val({_, _, Val}) -> Val;
-get_val({Val, _}) -> Val.
+get_val({_, _, Val}) ->
+    Val;
+get_val({Val, _}) ->
+    Val.
 
