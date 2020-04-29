@@ -50,3 +50,9 @@ qsort2([]) ->
 -spec type_test(A) -> A when A :: a().
 type_test(blah) -> "blah".
 
+
+-record(blah, {a, b, c}).
+
+rcd_() ->
+    io:format("~p~n", [#blah{a=1, _=default}]).
+
