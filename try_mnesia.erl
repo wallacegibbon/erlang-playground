@@ -8,6 +8,7 @@
 
 make_db() ->
     ok = mnesia:create_schema([node()]),
+    ok = mnesia:start(),
     {atomic, ok} = mnesia:create_table(shop, [{attributes,
 					       record_info(fields, shop)}]),
     ok.
