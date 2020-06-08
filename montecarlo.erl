@@ -3,22 +3,20 @@
 -export([pi/1]).
 
 calc(N, F) when is_integer(N), N > 0 ->
-    calc(N, 0, F) / N.
+    calc(N, F, 0) / N.
 
+calc(N, F, In) when N > 0 ->
+    calc(N - 1, F, In + bool2int(F()));
+calc(0, _, In) ->
+    In.
 
-calc(0, In, _) ->
-    In;
-calc(N, In, F) ->
-    case F() of
-	true ->
-	    calc(N - 1, In + 1, F);
-	false ->
-	    calc(N - 1, In, F)
-    end.
+bool2int(false) -> 0;
+bool2int(true) -> 1.
+
 
 pi_calc() ->
     {X, Y} = {rand:uniform(), rand:uniform()},
-    math:sqrt(X * X + Y * Y) < 1.
+    math:sqrt(X*X + Y*Y) < 1.
 
 pi(N) ->
     calc(N, fun pi_calc/0) * 4.
