@@ -5,7 +5,7 @@
 -export([test1/1, test2/0]).
 
 test1(V) ->
-	<<{{
+    <<{{
 	"name": "wallace gibbon",
 	"data": {
 	  "Parameter": V,
@@ -15,6 +15,6 @@ test1(V) ->
        }}>>.
 
 test2() ->
-	[],
-	<<{{}}>>.
+    [],
+    <<{{}}>>.
 

@@ -29,7 +29,7 @@ values -> value ',' values : ['$1' | '$3'].
 Erlang code.
 
 get_val({_, _, Val}) ->
-	Val;
+    Val;
 get_val({Val, _}) ->
-	Val.
+    Val.
 
