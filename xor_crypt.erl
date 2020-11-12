@@ -10,18 +10,18 @@ transform(Content, Key) when is_binary(Content), is_binary(Key),
 
 transform(Content, Key, Results) when size(Content) > size(Key) ->
     KeySize = size(Key),
-    <<SubContent:KeySize/binary, RestContent/binary>> = Content,
-    transform(RestContent, Key, [doxor(SubContent, Key, []) | Results]);
+    <<SubContent:KeySize/binary,RestContent/binary>> = Content,
+    transform(RestContent, Key, [doxor(SubContent, Key, [])|Results]);
 
 transform(Content, Key, Results) when Content =/= <<>> ->
-    transform(<<>>, Key, [doxor(Content, Key, []) | Results]);
+    transform(<<>>, Key, [doxor(Content, Key, [])|Results]);
 
 transform(<<>>, _, Results) ->
     list_to_binary(lists:reverse(Results)).
 
 
-doxor(<<A, RestContent/binary>>, <<B, RestKey/binary>>, Result) ->
-    doxor(RestContent, RestKey, [A bxor B | Result]);
+doxor(<<A,RestContent/binary>>, <<B,RestKey/binary>>, Result) ->
+    doxor(RestContent, RestKey, [A bxor B|Result]);
 doxor(<<>>, _, Result) ->
     list_to_binary(lists:reverse(Result)).
 

@@ -15,7 +15,7 @@ bool2int(true) -> 1.
 
 
 pi_calc() ->
-    {X, Y} = {rand:uniform(), rand:uniform()},
+    {X,Y} = {rand:uniform(),rand:uniform()},
     math:sqrt(X*X + Y*Y) < 1.
 
 pi(N) ->

@@ -29,7 +29,7 @@ menubar(F) ->
     wxFrame:setMenuBar(F, MenuBar),
     M1 = wxMenu:new(),
     wxMenuBar:append(MenuBar, M1, "&File"),
-    M1_1 = wxMenuItem:new([{id, 400}, {text, "&Quit"}]),
+    M1_1 = wxMenuItem:new([{id,400},{text,"&Quit"}]),
     wxMenu:append(M1, M1_1),
     E = wx:get_env(),
     spawn_link(fun() ->

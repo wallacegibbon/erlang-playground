@@ -2,7 +2,7 @@
 
 -compile({parse_transform, try_ast}).
 
--export([test1/1, test2/0]).
+-export([test1/1,test2/0]).
 
 test1(V) ->
     <<{{
