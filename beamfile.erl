@@ -38,7 +38,7 @@ align_by_four(N) ->
 parse_chunks(Chunks) ->
     parse_chunks(Chunks, []).
 
-parse_chunks([{"Atom",_Size,<<_Numberofatoms:32/integer,Atoms/binary>>}| Rest],
+parse_chunks([{"Atom",_Size,<<_Numberofatoms:32/integer,Atoms/binary>>}|Rest],
 	     Acc) ->
     parse_chunks(Rest, [{atoms,parse_atoms(Atoms)}|Acc]);
 

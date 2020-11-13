@@ -21,11 +21,11 @@ init_data() ->
     {atomic,_} = mnesia:transaction(F).
 
 test_read_sub() ->
-    R1 = qlc:e(qlc:q([X||X <- mnesia:table(shop),X#shop.cost > 10])),
+    R1 = qlc:e(qlc:q([X || X <- mnesia:table(shop), X#shop.cost > 10])),
     io:format(">> ~p, ~p~n", [self(),R1]),
     sleep(3000),
     mnesia:write(#shop{item=apple,quantity=10,cost=5}),
-    R2 = qlc:e(qlc:q([X||X <- mnesia:table(shop),X#shop.cost > 10])),
+    R2 = qlc:e(qlc:q([X || X <- mnesia:table(shop), X#shop.cost > 10])),
     io:format("<< ~p, ~p~n", [self(),R2]).
 
 test_read() ->

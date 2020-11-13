@@ -29,7 +29,7 @@ qsort(Lst) -> lists:flatten(qsort2(Lst)).
 
 -spec qsort1([number()]) -> [any()].
 qsort1([P|T]) ->
-    [qsort1([X||X<-T,X < P]),P,qsort1([X||X <- T,X >= P])];
+    [qsort1([X || X <- T, X < P]),P,qsort1([X || X <- T, X >= P])];
 qsort1([]) ->
     [].
 
@@ -37,7 +37,7 @@ qsort1([]) ->
 -spec qsort2([number()]) -> [any()].
 qsort2([P|T]) ->
     {Left,Right} = lists:partition(fun(A) -> A < P end, T),
-    [qsort2(Left), P, qsort2(Right)];
+    [qsort2(Left),P,qsort2(Right)];
 qsort2([]) ->
     [].
 

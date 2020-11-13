@@ -1,6 +1,6 @@
 -module(server1).
 
--export([start/2, rpc/2]).
+-export([start/2,rpc/2]).
 
 start(Name, Mod) ->
     register(Name, spawn(fun() ->
@@ -9,15 +9,15 @@ start(Name, Mod) ->
 
 loop(Name, Mod, State) ->
     receive
-	{From, Request} ->
-	    {Response, State1} = Mod:handle(Request, State),
-	    From ! {Name, Response},
+	{From,Request} ->
+	    {Response,State1} = Mod:handle(Request, State),
+	    From ! {Name,Response},
 	    loop(Name, Mod, State1)
     end.
 
 rpc(Name, Request) ->
-    Name ! {self(), Request},
+    Name ! {self(),Request},
     receive
-	{Name, Response} -> Response
+	{Name,Response} -> Response
     end.
 

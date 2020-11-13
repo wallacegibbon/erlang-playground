@@ -23,13 +23,13 @@ generate_code({float,_Line,F}) ->
     [push,F].
 
 interpret([push,I|Rest], Stack) ->
-    interpret(Rest, [I | Stack]);
+    interpret(Rest, [I|Stack]);
 interpret([add|Rest], [Arg2,Arg1|Stack]) ->
-    interpret(Rest, [Arg1+Arg2|Stack]);
+    interpret(Rest, [Arg1 + Arg2|Stack]);
 interpret([mul|Rest], [Arg2,Arg1|Stack]) ->
-    interpret(Rest, [Arg1*Arg2|Stack]);
+    interpret(Rest, [Arg1 * Arg2|Stack]);
 interpret(['div'|Rest], [Arg2,Arg1|Stack]) ->
-    interpret(Rest, [Arg1/Arg2|Stack]);
+    interpret(Rest, [Arg1 / Arg2|Stack]);
 interpret([], [Rest|_]) ->
     Rest.
 

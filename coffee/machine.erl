@@ -6,10 +6,10 @@
 
 -export([start_link/0]).
 
--export([cappuccino/0, americano/0, espresso/0, tea/0,
-	 pay/1, cancel/0, cup_removed/0]).
+-export([cappuccino/0,americano/0,espresso/0,tea/0,
+	 pay/1,cancel/0,cup_removed/0]).
 
--export([selection/3, payment/3, remove/3]).
+-export([selection/3,payment/3,remove/3]).
 
 -define(SERVER, ?MODULE).
 -define(TIMEOUT, 10000).
