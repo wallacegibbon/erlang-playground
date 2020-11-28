@@ -2,22 +2,22 @@
 
 -export([pi/1]).
 
-calc(N, F) when is_integer(N), N > 0 ->
-    calc(N, F, 0) / N.
+-spec calc(fun(() -> 0|1), pos_integer()) -> pos_integer().
+calc(F, N) when is_integer(N), N > 0 ->
+    calc(F, N, 0) / N.
 
-calc(N, F, In) when N > 0 ->
-    calc(N - 1, F, In + bool2int(F()));
-calc(0, _, In) ->
+calc(F, N, In) when N > 0 ->
+    calc(F, N-1, F()+In);
+calc(_, 0, In) ->
     In.
+
+pi_calc() ->
+    {X,Y} = {rand:uniform(),rand:uniform()},
+    bool2int(math:sqrt(X*X + Y*Y) < 1).
 
 bool2int(false) -> 0;
 bool2int(true) -> 1.
 
-
-pi_calc() ->
-    {X,Y} = {rand:uniform(),rand:uniform()},
-    math:sqrt(X*X + Y*Y) < 1.
-
 pi(N) ->
-    calc(N, fun pi_calc/0) * 4.
+    calc(fun pi_calc/0, N) * 4.
 
