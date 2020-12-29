@@ -14,8 +14,7 @@ mul_mv(Matrix, Vector) ->
 
 %% addition of a list of vectors
 merge_vectors([V1|VR]) ->
-    lists:foldl(fun(V, Sum) -> add_vv(V, Sum) end, V1, VR).
-
+    lists:foldl(fun add_vv/2, V1, VR).
 
 mul_mv1([MV|MVR], [E|ER]) ->
     [mul_vs(MV, E)|mul_mv1(MVR, ER)];
