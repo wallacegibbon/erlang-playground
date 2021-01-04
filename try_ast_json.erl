@@ -1,6 +1,6 @@
 -module(try_ast_json).
 
--compile({parse_transform, try_ast}).
+-compile({parse_transform,try_ast}).
 
 -export([test1/1,test2/0]).
 
