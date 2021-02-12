@@ -36,11 +36,14 @@ test_read_sub() ->
 				<- mnesia:table(blah)])),
     [R1] = qlc:e(qlc:q([X || X <- mnesia:table(shop)])),
     fmt("[~w] qlc in, ~p~n", [self(),R1]),
+    sleep(1000),
     mnesia:write(#shop{item=apple,quantity=10,cost=R1#shop.cost+Inc}),
     %fmt("[~w] sub, try to write table shop~n", [self()]),
     %mnesia:write(#shop{item=apple,quantity=10,cost=Inc}),
+    sleep(1000),
     [R2] = qlc:e(qlc:q([X || X <- mnesia:table(shop)])),
-    fmt("[~w] qlc out, ~p~n", [self(),R2]).
+    fmt("[~w] qlc out, ~p~n", [self(),R2]),
+    ok.
 
 test_read2() ->
     {atomic,_} = mnesia:transaction(fun test_read_sub2/0).
@@ -49,11 +52,14 @@ test_read_sub2() ->
     [#blah{value=Inc}] = mnesia:read(blah, apple),
     [R1] = mnesia:match_object(shop, #shop{_='_'}, read),
     fmt("[~w] match in, ~p~n", [self(),R1]),
+    sleep(1000),
     mnesia:write(#shop{item=apple,quantity=10,cost=R1#shop.cost+Inc}),
     %fmt("[~w] sub2, try to write table shop~n", [self()]),
     %mnesia:write(#shop{item=apple,quantity=10,cost=Inc}),
+    sleep(1000),
     [R2] = mnesia:match_object(#shop{_='_'}),
-    fmt("[~w] match out, ~p~n", [self(),R2]).
+    fmt("[~w] match out, ~p~n", [self(),R2]),
+    ok.
 
 fmt(Fmt, Args) ->
     Now = erlang:system_time(),
