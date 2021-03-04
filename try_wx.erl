@@ -29,13 +29,13 @@ menubar(F) ->
     wxFrame:setMenuBar(F, MenuBar),
     M1 = wxMenu:new(),
     wxMenuBar:append(MenuBar, M1, "&File"),
-    M1_1 = wxMenuItem:new([{id,400},{text,"&Quit"}]),
+    M1_1 = wxMenuItem:new([{id, 400}, {text, "&Quit"}]),
     wxMenu:append(M1, M1_1),
     E = wx:get_env(),
-    spawn_link(fun() ->
-		       wx:set_env(E),
-		       listen_command(F)
-	       end),
+    spawn_link(fun () ->
+                       wx:set_env(E),
+                       listen_command(F)
+               end),
     ok.
 
 listen_command(F) ->
@@ -44,18 +44,13 @@ listen_command(F) ->
 
 listen_loop(F) ->
     receive
-	#wx{id=400} ->
-	    wxFrame:setStatusText(F, "trying to close window");
-	#wx{id=Id} ->
-	    T = io_lib:format("unknown command (id: ~w)", [Id]),
-	    wxFrame:setStatusText(F, T)
+        #wx{id = 400} ->
+            wxFrame:setStatusText(F, "trying to close window");
+        #wx{id = Id} ->
+            T = io_lib:format("unknown command (id: ~w)", [Id]),
+            wxFrame:setStatusText(F, T)
     end,
     listen_loop(F).
 
 sleep(Milliseconds) ->
-    receive
-    after
-	Milliseconds ->
-	    ok
-    end.
-
+    receive  after Milliseconds -> ok end.

@@ -16,20 +16,17 @@ object -> '{' '}' : [].
 object -> '{' pairs '}' : '$2'.
 
 pairs -> pair : ['$1'].
-pairs -> pair ',' pairs : ['$1'|'$3'].
+pairs -> pair ',' pairs : ['$1' | '$3'].
 
-pair -> string ':' value : {get_val('$1'),'$3'}.
+pair -> string ':' value : {get_val('$1'), '$3'}.
 
 array -> '[' ']' : [].
 array -> '[' values ']' : '$2'.
 
 values -> value : ['$1'].
-values -> value ',' values : ['$1'|'$3'].
+values -> value ',' values : ['$1' | '$3'].
 
 Erlang code.
 
-get_val({_,_,Val}) ->
-    Val;
-get_val({Val,_}) ->
-    Val.
-
+get_val({_, _, Val}) -> Val;
+get_val({Val, _}) -> Val.
