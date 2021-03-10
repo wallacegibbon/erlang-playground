@@ -2,12 +2,10 @@
 
 -export([add/2, find/1, handle/2, init/0]).
 
--import(server3, [rpc/2]).
-
 add(Name, Place) ->
-    rpc(name_server, {add, Name, Place}).
+    server3:rpc(name_server, {add, Name, Place}).
 
-find(Name) -> rpc(name_server, {find, Name}).
+find(Name) -> server3:rpc(name_server, {find, Name}).
 
 handle({add, Name, Place}, Dict) ->
     {ok, dict:store(Name, Place, Dict)};

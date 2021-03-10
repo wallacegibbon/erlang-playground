@@ -7,16 +7,15 @@
          handle/2,
          init/0]).
 
--import(server3, [rpc/2]).
+all_names() -> server3:rpc(name_server, allNames).
 
-all_names() -> rpc(name_server, allNames).
-
-delete(Name) -> rpc(name_server, {delete, Name}).
+delete(Name) ->
+    server3:rpc(name_server, {delete, Name}).
 
 add(Name, Place) ->
-    rpc(name_server, {add, Name, Place}).
+    server3:rpc(name_server, {add, Name, Place}).
 
-find(Name) -> rpc(name_server, {find, Name}).
+find(Name) -> server3:rpc(name_server, {find, Name}).
 
 handle({add, Name, Place}, Dict) ->
     {ok, dict:store(Name, Place, Dict)};

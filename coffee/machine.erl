@@ -2,17 +2,13 @@
 
 -behaviour(gen_statem).
 
+-export([americano/0, cappuccino/0, espresso/0, tea/0]).
+
+-export([cancel/0, cup_removed/0, pay/1]).
+
 -export([callback_mode/0, init/1]).
 
 -export([payment/3, remove/3, selection/3]).
-
--export([americano/0,
-         cancel/0,
-         cappuccino/0,
-         cup_removed/0,
-         espresso/0,
-         pay/1,
-         tea/0]).
 
 -export([start_link/0]).
 
