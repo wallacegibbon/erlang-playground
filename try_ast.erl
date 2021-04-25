@@ -49,7 +49,7 @@ parse_json({integer, Line, Integer}) ->
 parse_json({float, Line, Float}) ->
     {float, Line, Float};
 parse_json({op, Line, '-', {Type, _, N}})
-    when Type =:= integer; Type =:= float ->
+        when Type =:= integer; Type =:= float ->
     {Type, Line, -N};
 %% true, false, null
 parse_json({atom, Line, true}) ->

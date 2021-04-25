@@ -75,7 +75,7 @@ parse_chunks([], Acc) ->
     Acc.
 
 parse_atoms(<<Atomlength, Atom:Atomlength/binary, Rest/binary>>)
-    when Atomlength > 0 ->
+        when Atomlength > 0 ->
     [list_to_atom(binary_to_list(Atom)) | parse_atoms(Rest)];
 parse_atoms(_Alignment) ->
     [].

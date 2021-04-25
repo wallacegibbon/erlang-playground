@@ -53,14 +53,14 @@ selection(cast, _Other, LoopData) ->
     {next_state, selection, LoopData}.
 
 payment(cast, {pay, Coin}, {Type, Price, Paid})
-    when Coin + Paid < Price ->
+        when Coin + Paid < Price ->
     NewPaid = Coin + Paid,
     hw:display("Please pay:~w", [Price - NewPaid]),
     %{next_state,payment,{Type,Price,NewPaid}};
     {next_state, payment, {Type, Price, NewPaid}, {timeout, ?TIMEOUT,
                                                    expired_waiting_for_more}};
 payment(cast, {pay, Coin}, {Type, Price, Paid})
-    when Coin + Paid >= Price ->
+        when Coin + Paid >= Price ->
     NewPaid = Coin + Paid,
     hw:display("Preparing Drink."),
     hw:return_change(NewPaid - Price),
