@@ -5,11 +5,13 @@
 add(Name, Place) ->
     server3:rpc(name_server, {add, Name, Place}).
 
-find(Name) -> server3:rpc(name_server, {find, Name}).
+find(Name) ->
+    server3:rpc(name_server, {find, Name}).
 
 handle({add, Name, Place}, Dict) ->
     {ok, dict:store(Name, Place, Dict)};
 handle({find, Name}, Dict) ->
     {dict:find(Name, Dict), Dict}.
 
-init() -> dict:new().
+init() ->
+    dict:new().

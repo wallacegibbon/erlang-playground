@@ -22,13 +22,14 @@ loop(Name, Mod, OldState) ->
     end.
 
 log_the_error(Name, Request, Why) ->
-    io:format("Server ~p request ~p ~ncaused exception "
-              "~p~n",
+    io:format("Server ~p request ~p ~ncaused exception ~p~n",
               [Name, Request, Why]).
 
 rpc(Name, Request) ->
     Name ! {self(), Request},
     receive
-        {Name, ok, Response} -> Response;
-        {Name, crash} -> exit(rpc)
+        {Name, ok, Response} ->
+            Response;
+        {Name, crash} ->
+            exit(rpc)
     end.

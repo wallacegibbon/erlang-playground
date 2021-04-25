@@ -2,14 +2,15 @@
 
 -export([pi/1]).
 
--spec calc(fun(() -> 0 | 1),
-           pos_integer()) -> pos_integer().
+-spec calc(fun(() -> 0 | 1), pos_integer()) -> pos_integer().
 
 calc(F, N) when is_integer(N), N > 0 ->
     calc(F, N, 0) / N.
 
-calc(F, N, In) when N > 0 -> calc(F, N - 1, F() + In);
-calc(_, 0, In) -> In.
+calc(F, N, In) when N > 0 ->
+    calc(F, N - 1, F() + In);
+calc(_, 0, In) ->
+    In.
 
 pi_calc() ->
     {X, Y} = {rand:uniform(), rand:uniform()},
@@ -18,4 +19,5 @@ pi_calc() ->
 bool2int(false) -> 0;
 bool2int(true) -> 1.
 
-pi(N) -> calc(fun pi_calc/0, N) * 4.
+pi(N) ->
+    calc(fun pi_calc/0, N) * 4.

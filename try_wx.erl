@@ -53,4 +53,4 @@ listen_loop(F) ->
     listen_loop(F).
 
 sleep(Milliseconds) ->
-    receive  after Milliseconds -> ok end.
+    receive after Milliseconds -> ok end.

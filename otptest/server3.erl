@@ -21,4 +21,5 @@ rpc(Name, Request) ->
     Name ! {self(), Request},
     receive {Name, Response} -> Response end.
 
-swap_code(Name, Mod) -> rpc(Name, {swap_code, Mod}).
+swap_code(Name, Mod) ->
+    rpc(Name, {swap_code, Mod}).

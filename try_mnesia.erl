@@ -29,7 +29,8 @@ test() ->
     spawn(fun test_read/0),
     ok.
 
-sleep(Ms) -> receive  after Ms -> true end.
+sleep(Ms) ->
+    receive after Ms -> true end.
 
 test_read() ->
     {atomic, _} = mnesia:transaction(fun test_read_sub/0).

@@ -35,19 +35,18 @@ qsort(Lst) -> lists:flatten(qsort2(Lst)).
 -spec qsort1([number()]) -> [any()].
 
 qsort1([P | T]) ->
-    [qsort1([X || X <- T, X < P]),
-     P,
-     qsort1([X || X <- T, X >= P])];
-qsort1([]) -> [].
+    [qsort1([X || X <- T, X < P]), P, qsort1([X || X <- T, X >= P])];
+qsort1([]) ->
+    [].
 
 %% this quick sort is much better, as it iterates the list only once.
 -spec qsort2([number()]) -> [any()].
 
 qsort2([P | T]) ->
-    {Left, Right} = lists:partition(fun (A) -> A < P end,
-                                    T),
+    {Left, Right} = lists:partition(fun (A) -> A < P end, T),
     [qsort2(Left), P, qsort2(Right)];
-qsort2([]) -> [].
+qsort2([]) ->
+    [].
 
 -type a() :: string() | atom().
 
@@ -56,7 +55,8 @@ qsort2([]) -> [].
 %-spec type_test(a()) -> a().
 -spec type_test(A) -> A when A :: a().
 
-type_test(blah) -> "blah".
+type_test(blah) ->
+    "blah".
 
 -record(blah, {a, b, c}).
 
