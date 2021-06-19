@@ -2,12 +2,10 @@
 
 -export([transform/2]).
 
-transform(Content, Key)
-        when is_binary(Content), is_binary(Key), size(Key) > 0 ->
+transform(Content, Key) when is_binary(Content), is_binary(Key), size(Key) > 0 ->
     transform(Content, Key, []).
 
-transform(Content, Key, Results)
-        when size(Content) > size(Key) ->
+transform(Content, Key, Results) when size(Content) > size(Key) ->
     KeySize = size(Key),
     <<SubContent:KeySize/binary, RestContent/binary>> = Content,
     transform(RestContent, Key, [doxor(SubContent, Key, []) | Results]);

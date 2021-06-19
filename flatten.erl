@@ -5,8 +5,7 @@
 %%----------------------------------------------------------------------
 %% this is the flatten used by otp
 %%----------------------------------------------------------------------
-flatten2(Lst) when is_list(Lst) ->
-    flatten2(Lst, []).
+flatten2(Lst) when is_list(Lst) -> flatten2(Lst, []).
 
 flatten2([H | T], Tail) when is_list(H) ->
     flatten2(H, flatten2(T, Tail));
