@@ -1,14 +1,14 @@
 Definitions.
 
-Digit = [0-9]
-Digit1to9 = [1-9]
-HexDigit = [0-9a-f]
-UnescapedChar = [^\"\\]
-EscapedChar = \\\\|\\\"|\\b|\\f|\\n|\\r|\\t|\\/
-Unicode = \\u{HexDigit}{HexDigit}{HexDigit}{HexDigit}
-Quote = [\"]
-Delim = [\[\]:,{}]
-Space = [\n\s\t\r]
+Digit =                                                     [0-9]
+Digit1to9 =                                                 [1-9]
+HexDigit =                                                  [0-9a-f]
+UnescapedChar =                                             [^\"\\]
+EscapedChar =                                               \\\\|\\\"|\\b|\\f|\\n|\\r|\\t|\\/
+Unicode =                                                   \\u{HexDigit}{HexDigit}{HexDigit}{HexDigit}
+Quote =                                                     [\"]
+Delim =                                                     [\[\]:,{}]
+Space =                                                     [\n\s\t\r]
 
 Rules.
 

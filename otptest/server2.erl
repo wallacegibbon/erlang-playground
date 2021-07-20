@@ -2,8 +2,7 @@
 
 -export([rpc/2, start/2]).
 
-start(Name, Mod) ->
-    register(Name, spawn(fun () -> loop(Name, Mod, Mod:init()) end)).
+start(Name, Mod) -> register( Name, spawn(fun () -> loop(Name, Mod, Mod:init()) end) ).
 
 loop(Name, Mod, OldState) ->
     receive
@@ -14,14 +13,11 @@ loop(Name, Mod, OldState) ->
                     loop(Name, Mod, NewState)
             catch
                 _:Why ->
-                    log_the_error(Name, Request, Why),
+                    io:format("Server ~p request ~p ~ncaused exception ~p~n", [Name, Request, Why]),
                     From ! {Name, crash},
                     loop(Name, Mod, OldState)
             end
     end.
-
-log_the_error(Name, Request, Why) ->
-    io:format("Server ~p request ~p ~ncaused exception ~p~n", [Name, Request, Why]).
 
 rpc(Name, Request) ->
     Name ! {self(), Request},
