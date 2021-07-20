@@ -1,7 +1,7 @@
 {
-    "no": 1,
-    "name": "Jack \"Bee\" Nimble",
-    "escapes": "\b\n\r\t\f\//\\",
+    "no":               1,
+    "name":             "Jack \"Bee\" Nimble",
+    "escapes":          "\b\n\r\t\f\//\\",
     "format": {
         "type": "rect",
         "widths": [

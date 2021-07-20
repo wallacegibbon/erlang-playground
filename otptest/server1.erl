@@ -3,8 +3,7 @@
 -export([rpc/2, start/2]).
 
 start(Name, Mod) ->
-    register(Name,
-             spawn(fun () -> loop(Name, Mod, Mod:init()) end)).
+    register(Name, spawn(fun () -> loop(Name, Mod, Mod:init()) end)).
 
 loop(Name, Mod, State) ->
     receive

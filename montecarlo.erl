@@ -6,14 +6,14 @@
 
 calc(F, N) when is_integer(N), N > 0 -> calc(F, N, 0) / N.
 
-calc(F, N, In) when N > 0 -> calc(F, N - 1, F() + In);
-calc(_, 0, In) -> In.
+calc(F, N, In) when N > 0 ->    calc(F, N - 1, F() + In);
+calc(_, 0, In) ->               In.
 
-pi_calc() ->
+calculatePi() ->
     {X, Y} = {rand:uniform(), rand:uniform()},
     bool2int(math:sqrt(X * X + Y * Y) < 1).
 
-bool2int(false) -> 0;
-bool2int(true) -> 1.
+bool2int(false) ->  0;
+bool2int(true) ->   1.
 
-pi(N) -> calc(fun pi_calc/0, N) * 4.
+pi(N) -> calc(fun calculatePi/0, N) * 4.

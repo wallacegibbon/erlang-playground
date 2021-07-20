@@ -7,12 +7,9 @@
 %%----------------------------------------------------------------------
 flatten2(Lst) when is_list(Lst) -> flatten2(Lst, []).
 
-flatten2([H | T], Tail) when is_list(H) ->
-    flatten2(H, flatten2(T, Tail));
-flatten2([H | T], Tail) ->
-    [H | flatten2(T, Tail)];
-flatten2([], Tail) ->
-    Tail.
+flatten2([H | T], Tail) when is_list(H) ->  flatten2(H, flatten2(T, Tail));
+flatten2([H | T], Tail) ->                  [H | flatten2(T, Tail)];
+flatten2([], Tail) ->                       Tail.
 
 %%----------------------------------------------------------------------
 %% this is the flatten based on process
@@ -35,8 +32,6 @@ flatten1([], _) ->
 
 collector(Lst) ->
     receive
-        {add, Ele} ->
-            collector([Ele | Lst]);
-        {Pid, Ref} ->
-            Pid ! {Ref, lists:reverse(Lst)}
+        {add, Ele} ->   collector([Ele | Lst]);
+        {Pid, Ref} ->   Pid ! {Ref, lists:reverse(Lst)}
     end.
