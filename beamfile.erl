@@ -27,7 +27,7 @@ readChunks(<<N, A, M, E, Size:32/integer, Tail/binary>>, Acc) ->
 readChunks(<<>>, Acc) ->
     lists:reverse(Acc).
 
-prvAlignByFour(N) ->    (N + 3) div 4 * 4.
+prvAlignByFour(N) -> (N + 3) div 4 * 4.
 
 prvParseChunks(Chunks) -> prvParseChunks(Chunks, []).
 
@@ -66,18 +66,18 @@ prvParseChunks([Chunk | Rest], Acc) ->
 prvParseChunks([], Acc) ->
     Acc.
 
-prvParseExports(<<Function:32/integer, Arity:32/integer, Label:32/integer, Rest/binary>>) ->    [{Function, Arity, Label} | prvParseExports(Rest)];
-prvParseExports(_Alignment) ->                                                                  [].
+prvParseExports(<<Function:32/integer, Arity:32/integer, Label:32/integer, Rest/binary>>)   -> [{Function, Arity, Label} | prvParseExports(Rest)];
+prvParseExports(_Alignment)                                                                 -> [].
 
-prvParseAtoms(<<Atomlength, Atom:Atomlength/binary, Rest/binary>>) when Atomlength > 0 ->   [list_to_atom(binary_to_list(Atom)) | prvParseAtoms(Rest)];
-prvParseAtoms(_Alignment) ->                                                                [].
+prvParseAtoms(<<Atomlength, Atom:Atomlength/binary, Rest/binary>>) when Atomlength > 0  -> [list_to_atom(binary_to_list(Atom)) | prvParseAtoms(Rest)];
+prvParseAtoms(_Alignment)                                                               -> [].
 
 prvParseCodeInfo(<<Instructionset:32/integer, OpcodeMax:32/integer, NumberOfLabels:32/integer, NumberOfFunctions:32/integer, Rest/binary>>) ->
     Left = case Rest of
-               <<>> ->      [];
-               _ ->         [{newinfo, Rest}]
+               <<>>         -> [];
+               _            -> [{newinfo, Rest}]
            end,
     [{instructionset, Instructionset}, {opcodemax, OpcodeMax}, {numoflabels, NumberOfLabels}, {numoffunctions, NumberOfFunctions} | Left].
 
-prvParseLiterals(<<Size:32, Literal:Size/binary, Tail/binary>>) ->  [binary_to_term(Literal) | prvParseLiterals(Tail)];
-prvParseLiterals(<<>>) ->                                           [].
+prvParseLiterals(<<Size:32, Literal:Size/binary, Tail/binary>>)     -> [binary_to_term(Literal) | prvParseLiterals(Tail)];
+prvParseLiterals(<<>>)                                              -> [].
