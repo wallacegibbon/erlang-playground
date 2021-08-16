@@ -15,9 +15,10 @@ generateCode({op, _Line, '+', Operand1, Operand2})              -> [generateCode
 generateCode({op, _Line, '-', Operand1, Operand2})              -> [generateCode(Operand1), generateCode(Operand2), '-'];
 generateCode({op, _Line, '*', Operand1, Operand2})              -> [generateCode(Operand1), generateCode(Operand2), '*'];
 generateCode({op, _Line, '/', Operand1, Operand2})              -> [generateCode(Operand1), generateCode(Operand2), '/'];
-generateCode({op,  Line, OP , _   , _})                         -> throw({unknownOperation, OP, Line});
-generateCode({integer,  _Line, Number})                         -> [push, Number];
-generateCode({float,    _Line, Number})                         -> [push, Number].
+generateCode({op,  Line, OP , _       , _})                     -> throw({unknownOperation, OP, Line});
+generateCode({integer   , _Line, Number})                       -> [push, Number];
+generateCode({float     , _Line, Number})                       -> [push, Number];
+generateCode(Token)                                             -> throw({unknownToken, element(1, Token), element(2, Token)}).
 
 compile(ExprString) ->
     {ok, Tokens, _} = erl_scan:string(ExprString),
