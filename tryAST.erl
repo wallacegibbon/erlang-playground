@@ -10,7 +10,7 @@ parse_transform(AST, _Options) ->
     io:format("AST: ~p~n~nResult AST:~p~n", [AST, R]),
     R.
 
--define(FUNCTION(Clauses),  {function, Label, Name, Arity, Clauses}).
+-define(FUNCTION(Clauses), {function, Label, Name, Arity, Clauses}).
 
 json([?FUNCTION(Clauses) | Rest], Parsed) ->
     json(Rest, [?FUNCTION((json_clauses(Clauses))) | Parsed]);

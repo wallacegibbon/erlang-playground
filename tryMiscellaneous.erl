@@ -32,7 +32,7 @@ info(_, []) ->
 
 -spec qsort([number()]) -> [number()].
 qsort(Lst) ->
-    lists:flatten( qsort2(Lst) ).
+    lists:flatten(qsort2(Lst)).
 
 -spec qsort1([number()]) -> [any()].
 qsort1([P | T]) ->

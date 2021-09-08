@@ -16,7 +16,7 @@ interpret([], [Rest | _]) ->
     Rest.
 
 generateCodeAndFlatten(Instructions) ->
-    lists:flatten( generateCode(Instructions) ).
+    lists:flatten(generateCode(Instructions)).
 
 generateCode({op, _Line, '+', Operand1, Operand2}) ->
     [generateCode(Operand1), generateCode(Operand2), '+'];
@@ -43,4 +43,4 @@ compile(ExprString) ->
     Code.
 
 run(ExprString) ->
-    interpret( compile(ExprString), [] ).
+    interpret(compile(ExprString), []).

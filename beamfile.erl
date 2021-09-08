@@ -16,7 +16,7 @@ read(Filename) ->
     {ok, Content} = file:read_file(Filename),
     <<"FOR1", Size:32/integer, "BEAM", Chunks/binary>> = Content,
     %{Size, readChunks(Chunks)}.
-    {Size, prvParseChunks( readChunks(Chunks) )}.
+    {Size, prvParseChunks(readChunks(Chunks))}.
 
 readChunks(Chunks) ->
     readChunks(Chunks, []).
