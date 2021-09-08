@@ -5,16 +5,31 @@
 -export([start_link/0, americano/0, cappuccino/0, espresso/0, tea/0, cancel/0, cup_removed/0, pay/1]).
 -export([callback_mode/0, init/1, payment/3, remove/3, selection/3]).
 
--define(TIMEOUT,                            10000).
+-define(TIMEOUT, 10000).
 
-cappuccino()        -> gen_statem:cast(?MODULE, {selection, cappuccino, 150}).
-americano()         -> gen_statem:cast(?MODULE, {selection, americano, 150}).
-espresso()          -> gen_statem:cast(?MODULE, {selection, espresso, 100}).
-tea()               -> gen_statem:cast(?MODULE, {selection, tea, 100}).
-pay(Coins)          -> gen_statem:cast(?MODULE, {pay, Coins}).
-cancel()            -> gen_statem:cast(?MODULE, cancel).
-cup_removed()       -> gen_statem:cast(?MODULE, cup_removed).
-start_link()        -> gen_statem:start_link({local, ?MODULE}, ?MODULE, [], []).
+cappuccino() ->
+    gen_statem:cast(?MODULE, {selection, cappuccino, 150}).
+
+americano() ->
+    gen_statem:cast(?MODULE, {selection, americano, 150}).
+
+espresso() ->
+    gen_statem:cast(?MODULE, {selection, espresso, 100}).
+
+tea() ->
+    gen_statem:cast(?MODULE, {selection, tea, 100}).
+
+pay(Coins) ->
+    gen_statem:cast(?MODULE, {pay, Coins}).
+
+cancel() ->
+    gen_statem:cast(?MODULE, cancel).
+
+cup_removed() ->
+    gen_statem:cast(?MODULE, cup_removed).
+
+start_link() ->
+    gen_statem:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 selection(cast, {selection, Type, Price}, _LoopData) ->
     hardware:display("Please pay: ~w", [Price]),

@@ -27,16 +27,28 @@ false                                                       : {token, {false, To
 
 Erlang code.
 
-drop_quotes([$" | QuotedString]) -> lists:droplast(QuotedString).
+drop_quotes([$" | QuotedString]) ->
+    lists:droplast(QuotedString).
 
-fixchars([$\\, $" | Rest])                      -> [$"  | fixchars(Rest)];
-fixchars([$\\, $\\ | Rest])                     -> [$\\ | fixchars(Rest)];
-fixchars([$\\, $/ | Rest])                      -> [$/  | fixchars(Rest)];
-fixchars([$\\, $b | Rest])                      -> [$\b | fixchars(Rest)];
-fixchars([$\\, $f | Rest])                      -> [$\f | fixchars(Rest)];
-fixchars([$\\, $n | Rest])                      -> [$\n | fixchars(Rest)];
-fixchars([$\\, $r | Rest])                      -> [$\r | fixchars(Rest)];
-fixchars([$\\, $t | Rest])                      -> [$\t | fixchars(Rest)];
-fixchars([$\\, $u, D0, D1, D2, D3 | Rest])      -> [list_to_integer([D0, D1, D2, D3], 16) | fixchars(Rest)];
-fixchars([C | Rest])                            -> [C   | fixchars(Rest)];
-fixchars([])                                    -> [].
+fixchars([$\\, $" | Rest]) ->
+    [$"  | fixchars(Rest)];
+fixchars([$\\, $\\ | Rest]) ->
+    [$\\ | fixchars(Rest)];
+fixchars([$\\, $/ | Rest]) ->
+    [$/  | fixchars(Rest)];
+fixchars([$\\, $b | Rest]) ->
+    [$\b | fixchars(Rest)];
+fixchars([$\\, $f | Rest]) ->
+    [$\f | fixchars(Rest)];
+fixchars([$\\, $n | Rest]) ->
+    [$\n | fixchars(Rest)];
+fixchars([$\\, $r | Rest]) ->
+    [$\r | fixchars(Rest)];
+fixchars([$\\, $t | Rest]) ->
+    [$\t | fixchars(Rest)];
+fixchars([$\\, $u, D0, D1, D2, D3 | Rest]) ->
+    [list_to_integer([D0, D1, D2, D3], 16) | fixchars(Rest)];
+fixchars([C | Rest]) ->
+    [C   | fixchars(Rest)];
+fixchars([]) ->
+    [].

@@ -2,23 +2,38 @@
 
 -export([generateCode/1, interpret/2, run/1]).
 
-interpret([push, I | Rest]  , Stack)                            -> interpret(Rest, [I | Stack]);
-interpret(['+'     | Rest]  , [Operand2, Operand1 | Stack])     -> interpret(Rest, [Operand1 + Operand2 | Stack]);
-interpret(['-'     | Rest]  , [Operand2, Operand1 | Stack])     -> interpret(Rest, [Operand1 - Operand2 | Stack]);
-interpret(['*'     | Rest]  , [Operand2, Operand1 | Stack])     -> interpret(Rest, [Operand1 * Operand2 | Stack]);
-interpret(['/'     | Rest]  , [Operand2, Operand1 | Stack])     -> interpret(Rest, [Operand1 / Operand2 | Stack]);
-interpret([]                , [Rest               | _])         -> Rest.
+interpret(['+' | Rest], [Operand2, Operand1 | Stack]) ->
+    interpret(Rest, [Operand1 + Operand2 | Stack]);
+interpret(['-' | Rest], [Operand2, Operand1 | Stack]) ->
+    interpret(Rest, [Operand1 - Operand2 | Stack]);
+interpret(['*' | Rest], [Operand2, Operand1 | Stack]) ->
+    interpret(Rest, [Operand1 * Operand2 | Stack]);
+interpret(['/' | Rest], [Operand2, Operand1 | Stack]) ->
+    interpret(Rest, [Operand1 / Operand2 | Stack]);
+interpret([push, I | Rest], Stack) ->
+    interpret(Rest, [I | Stack]);
+interpret([], [Rest | _]) ->
+    Rest.
 
-generateCodeAndFlatten(Instructions) -> lists:flatten( generateCode(Instructions) ).
+generateCodeAndFlatten(Instructions) ->
+    lists:flatten( generateCode(Instructions) ).
 
-generateCode({op, _Line, '+', Operand1, Operand2})              -> [generateCode(Operand1), generateCode(Operand2), '+'];
-generateCode({op, _Line, '-', Operand1, Operand2})              -> [generateCode(Operand1), generateCode(Operand2), '-'];
-generateCode({op, _Line, '*', Operand1, Operand2})              -> [generateCode(Operand1), generateCode(Operand2), '*'];
-generateCode({op, _Line, '/', Operand1, Operand2})              -> [generateCode(Operand1), generateCode(Operand2), '/'];
-generateCode({op,  Line, OP , _       , _})                     -> throw({unknownOperation, OP, Line});
-generateCode({integer   , _Line, Number})                       -> [push, Number];
-generateCode({float     , _Line, Number})                       -> [push, Number];
-generateCode(Token)                                             -> throw({unknownToken, element(1, Token), element(2, Token)}).
+generateCode({op, _Line, '+', Operand1, Operand2}) ->
+    [generateCode(Operand1), generateCode(Operand2), '+'];
+generateCode({op, _Line, '-', Operand1, Operand2}) ->
+    [generateCode(Operand1), generateCode(Operand2), '-'];
+generateCode({op, _Line, '*', Operand1, Operand2}) ->
+    [generateCode(Operand1), generateCode(Operand2), '*'];
+generateCode({op, _Line, '/', Operand1, Operand2}) ->
+    [generateCode(Operand1), generateCode(Operand2), '/'];
+generateCode({op, Line, OP , _, _}) ->
+    throw({unknownOperation, OP, Line});
+generateCode({integer, _Line, Number}) ->
+    [push, Number];
+generateCode({float, _Line, Number}) ->
+    [push, Number];
+generateCode(Token) ->
+    throw({unknownToken, element(1, Token), element(2, Token)}).
 
 compile(ExprString) ->
     {ok, Tokens, _} = erl_scan:string(ExprString),
@@ -27,4 +42,5 @@ compile(ExprString) ->
     io:format("Tokens: ~w~n~nAST: ~p~n~nCode: ~w~n", [Tokens, AST, Code]),
     Code.
 
-run(ExprString) -> interpret( compile(ExprString), [] ).
+run(ExprString) ->
+    interpret( compile(ExprString), [] ).

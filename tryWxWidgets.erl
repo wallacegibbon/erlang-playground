@@ -52,4 +52,5 @@ prvListenCommandLoop(F) ->
     end,
     prvListenCommandLoop(F).
 
-sleep(Milliseconds) -> receive after Milliseconds -> ok end.
+sleep(Milliseconds) ->
+    receive after Milliseconds -> ok end.
