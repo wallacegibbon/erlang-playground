@@ -80,12 +80,12 @@ prvParseAtoms(_Alignment) ->
     [].
 
 prvParseCodeInfo(<<Instructionset:32/integer, OpcodeMax:32/integer, NumberOfLabels:32/integer, NumberOfFunctions:32/integer, Rest/binary>>) ->
-    Left =  case Rest of
+    Left = case Rest of
                 <<>> ->
                     [];
                 _ ->
                     [{newinfo, Rest}]
-            end,
+           end,
     [{instructionset, Instructionset}, {opcodemax, OpcodeMax}, {numoflabels, NumberOfLabels}, {numoffunctions, NumberOfFunctions} | Left].
 
 prvParseLiterals(<<Size:32, Literal:Size/binary, Tail/binary>>) ->
