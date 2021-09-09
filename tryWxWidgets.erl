@@ -1,5 +1,7 @@
 -module(tryWxWidgets).
 
+%% For more infomation about the wx module, you can see the demo by invoking `wx:demo()`
+
 -export([start/0]).
 
 -include_lib("wx/include/wx.hrl").

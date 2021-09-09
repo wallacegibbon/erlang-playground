@@ -26,7 +26,7 @@ generateCode({op, _Line, '*', Operand1, Operand2}) ->
     [generateCode(Operand1), generateCode(Operand2), '*'];
 generateCode({op, _Line, '/', Operand1, Operand2}) ->
     [generateCode(Operand1), generateCode(Operand2), '/'];
-generateCode({op, Line, OP , _, _}) ->
+generateCode({op, Line, OP, _, _}) ->
     throw({unknownOperation, OP, Line});
 generateCode({integer, _Line, Number}) ->
     [push, Number];
