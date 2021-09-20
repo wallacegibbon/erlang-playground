@@ -8,3 +8,5 @@ Mnesia.*/
 *.E
 *.S
 *.dot
+*.iml
+.idea
