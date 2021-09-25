@@ -11,11 +11,11 @@ start() ->
     Frame = wxFrame:new(Wx, -1, "Hello, Wallace"),
     wxFrame:show(Frame),
 
-    prvStatusBar(Frame),
-    prvMenuBar(Frame),
+    statusBar(Frame),
+    menuBar(Frame),
     ok.
 
-prvStatusBar(Frame) ->
+statusBar(Frame) ->
     wxFrame:createStatusBar(Frame),
     wxFrame:setStatusText(Frame, "no message yet."),
 
@@ -26,7 +26,7 @@ prvStatusBar(Frame) ->
     wxStatusBar:popStatusText(StatusBar),
     ok.
 
-prvMenuBar(Frame) ->
+menuBar(Frame) ->
     MenuBar = wxMenuBar:new(),
     wxFrame:setMenuBar(Frame, MenuBar),
     Menu = wxMenu:new(),
@@ -36,15 +36,15 @@ prvMenuBar(Frame) ->
     Environment = wx:get_env(),
     spawn_link(fun () ->
                        wx:set_env(Environment),
-                       prvListenCommand(Frame)
+                       listenCommand(Frame)
                end),
     ok.
 
-prvListenCommand(F) ->
+listenCommand(F) ->
     wxFrame:connect(F, command_menu_selected),
-    prvListenCommandLoop(F).
+    listenCommandLoop(F).
 
-prvListenCommandLoop(F) ->
+listenCommandLoop(F) ->
     receive
         #wx{id = 400} ->
             wxFrame:setStatusText(F, "trying to close window");
@@ -52,7 +52,7 @@ prvListenCommandLoop(F) ->
             T = io_lib:format("unknown command (id: ~w)", [Id]),
             wxFrame:setStatusText(F, T)
     end,
-    prvListenCommandLoop(F).
+    listenCommandLoop(F).
 
 sleep(Milliseconds) ->
     receive after Milliseconds -> ok end.
