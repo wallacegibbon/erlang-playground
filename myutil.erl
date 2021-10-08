@@ -4,6 +4,7 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
+-spec compose([ComposeFn]) -> ComposeFn when ComposeFn :: fun ((any()) -> any()).
 compose([Rule | Rules]) ->
     fun (E) -> (compose(Rules))(Rule(E)) end;
 compose([]) ->
