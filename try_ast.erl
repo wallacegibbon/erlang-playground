@@ -1,7 +1,7 @@
 %% This is based on: http://blog.stenmans.org/theBeamBook/
 %% Only Leading JSON is parsed.
 
--module(tryAST).
+-module(try_ast).
 
 -export([parse_transform/2]).
 

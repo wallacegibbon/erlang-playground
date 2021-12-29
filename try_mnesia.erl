@@ -1,4 +1,4 @@
--module(tryMnesia).
+-module(try_mnesia).
 
 -include_lib("stdlib/include/qlc.hrl").
 

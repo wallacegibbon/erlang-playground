@@ -34,10 +34,9 @@ start_link() ->
 selection(cast, {selection, Type, Price}, _LoopData) ->
     hardware:display("Please pay: ~w", [Price]),
     %% state timeout is too strict, it is not friendly for people who paid slow
-    %{next_state,payment,{Type,Price,0},{state_timeout,?TIMEOUT,expired}};
     {next_state, payment, {Type, Price, 0}, {timeout, ?TIMEOUT, expired_without_payment}};
 selection(cast, {pay, Coin}, LoopData) ->
-    hardware:returnChange(Coin),
+    hardware:return_change(Coin),
     {next_state, selection, LoopData};
 selection(cast, _Other, LoopData) ->
     {next_state, selection, LoopData}.
@@ -45,34 +44,31 @@ selection(cast, _Other, LoopData) ->
 payment(cast, {pay, Coin}, {Type, Price, Paid}) when Coin + Paid < Price ->
     NewPaid = Coin + Paid,
     hardware:display("Please pay:~w", [Price - NewPaid]),
-    %{next_state,payment,{Type,Price,NewPaid}};
     {next_state, payment, {Type, Price, NewPaid}, {timeout, ?TIMEOUT, expired_waiting_for_more}};
 payment(cast, {pay, Coin}, {Type, Price, Paid}) when Coin + Paid >= Price ->
     NewPaid = Coin + Paid,
     hardware:display("Preparing Drink."),
-    hardware:returnChange(NewPaid - Price),
-    hardware:dropCup(),
+    hardware:return_change(NewPaid - Price),
+    hardware:drop_cup(),
     hardware:prepare(Type),
     hardware:display("Remove Drink."),
     {next_state, remove, null};
 payment(cast, cancel, {_, _, Paid}) ->
     hardware:display("Make Your Selection"),
-    hardware:returnChange(Paid),
+    hardware:return_change(Paid),
     {next_state, selection, null};
-%payment(state_timeout, _, {_Type,_Price,Paid}) ->
 payment(timeout, Info, {_Type, _Price, Paid}) ->
     hardware:display("Make your selection (last fail: ~p)", [Info]),
-    hardware:returnChange(Paid),
+    hardware:return_change(Paid),
     {next_state, selection, []};
 payment(cast, _Other, LoopData) ->
-    %{next_state,payment,LoopData}.
     {next_state, payment, LoopData, {timeout, ?TIMEOUT, expired_anyway}}.
 
 remove(cast, cup_removed, LoopData) ->
     hardware:display("Make Your Selection"),
     {next_state, selection, LoopData};
 remove(cast, {pay, Coin}, LoopData) ->
-    hardware:returnChange(Coin),
+    hardware:return_change(Coin),
     {next_state, remove, LoopData};
 remove(cast, _Other, LoopData) ->
     {next_state, remove, LoopData}.

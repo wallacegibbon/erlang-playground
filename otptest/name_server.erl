@@ -1,4 +1,4 @@
--module(nameServer).
+-module(name_server).
 
 -export([add/2, find/1, handle/2, init/0]).
 

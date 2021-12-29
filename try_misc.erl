@@ -1,4 +1,4 @@
--module(tryMiscellaneous).
+-module(try_misc).
 
 -compile(export_all).
 
@@ -8,27 +8,20 @@ try_format() ->
 %io:format("~c, ~.2f, ~s~n", [97, 32.0, "hello"]).
 
 -spec factorial(pos_integer()) -> pos_integer().
-factorial(1) ->
-    1;
-factorial(N) ->
-    N * factorial(N - 1).
+factorial(1) -> 1;
+factorial(N) -> N * factorial(N - 1).
 
 -spec cnt([any()]) -> pos_integer().
 cnt(S) ->
     cnt(S, 0).
 
 -spec cnt([any()], non_neg_integer()) -> pos_integer().
-cnt([_ | Rst], Cnt) ->
-    cnt(Rst, Cnt + 1);
-cnt([], Cnt) ->
-    Cnt.
+cnt([_ | Rst], Cnt) -> cnt(Rst, Cnt + 1);
+cnt([], Cnt) -> Cnt.
 
-info(Name, [{Name, I} | _]) ->
-    I;
-info(Name, [_ | R]) ->
-    info(Name, R);
-info(_, []) ->
-    unknown.
+info(Name, [{Name, I} | _]) -> I;
+info(Name, [_ | R]) -> info(Name, R);
+info(_, []) -> unknown.
 
 -spec qsort([number()]) -> [number()].
 qsort(Lst) ->

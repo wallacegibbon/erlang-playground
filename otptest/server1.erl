@@ -7,15 +7,15 @@ start(Name, Mod) ->
 
 loop(Name, Mod, State) ->
     receive
-        {From, Request} ->
-            {Response, State1} = Mod:handle(Request, State),
-            From ! {Name, Response},
+        {From, Req} ->
+            {Resp, State1} = Mod:handle(Req, State),
+            From ! {Name, Resp},
             loop(Name, Mod, State1)
     end.
 
-rpc(Name, Request) ->
-    Name ! {self(), Request},
+rpc(Name, Req) ->
+    Name ! {self(), Req},
     receive
-        {Name, Response} ->
-            Response
+        {Name, Resp} ->
+            Resp
     end.

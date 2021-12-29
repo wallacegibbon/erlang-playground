@@ -15,80 +15,79 @@
 read(Filename) ->
     {ok, Content} = file:read_file(Filename),
     <<"FOR1", Size:32/integer, "BEAM", Chunks/binary>> = Content,
-    %{Size, readChunks(Chunks)}.
-    {Size, parseChunks(readChunks(Chunks))}.
+    {Size, parse_chunks(read_chunks(Chunks))}.
 
-readChunks(Chunks) ->
-    readChunks(Chunks, []).
+read_chunks(Chunks) ->
+    read_chunks(Chunks, []).
 
-readChunks(<<N, A, M, E, Size:32/integer, Tail/binary>>, Acc) ->
-    ChunkLength = alignByFour(Size),
+read_chunks(<<N, A, M, E, Size:32/integer, Tail/binary>>, Acc) ->
+    ChunkLength = align_by_four(Size),
     <<Chunk:ChunkLength/binary, Rest/binary>> = Tail,
-    readChunks(Rest, [{[N, A, M, E], Size, Chunk} | Acc]);
-readChunks(<<>>, Acc) ->
+    read_chunks(Rest, [{[N, A, M, E], Size, Chunk} | Acc]);
+read_chunks(<<>>, Acc) ->
     lists:reverse(Acc).
 
-alignByFour(N) ->
+align_by_four(N) ->
     (N + 3) div 4 * 4.
 
-parseChunks(Chunks) ->
-    parseChunks(Chunks, []).
+parse_chunks(Chunks) ->
+    parse_chunks(Chunks, []).
 
-parseChunks([{"Atom", _Size, <<_Numberofatoms:32/integer, Atoms/binary>>} | Rest], Acc) ->
-    parseChunks(Rest, [{atoms, parseAtoms(Atoms)} | Acc]);
-parseChunks([{"AtU8", Size, Atoms} | Rest], Acc) ->
-    parseChunks([{"Atom", Size, Atoms} | Rest], Acc);
-parseChunks([{"ExpT", _Size, <<_Numberofentries:32/integer, Exports/binary>>} | Rest], Acc) ->
-    parseChunks(Rest, [{exports, parseExports(Exports)} | Acc]);
-parseChunks([{"Code", Size, <<Subsize:32/integer, Chunk/binary>>} | Rest], Acc) ->
-    <<Info:Subsize/binary, Code/binary>> = Chunk,
-    %% 8 is size of CunkSize & Subsize
-    OpcodeSize = Size - Subsize - 8,
+parse_chunks([{"Atom", _Size, <<_NumOfAtoms:32/integer, Atoms/binary>>} | Rest], Acc) ->
+    parse_chunks(Rest, [{atoms, parseAtoms(Atoms)} | Acc]);
+parse_chunks([{"AtU8", Size, Atoms} | Rest], Acc) ->
+    parse_chunks([{"Atom", Size, Atoms} | Rest], Acc);
+parse_chunks([{"ExpT", _Size, <<_NumOfEntries:32/integer, Exports/binary>>} | Rest], Acc) ->
+    parse_chunks(Rest, [{exports, parse_exports(Exports)} | Acc]);
+parse_chunks([{"Code", Size, <<SubSize:32/integer, Chunk/binary>>} | Rest], Acc) ->
+    <<Info:SubSize/binary, Code/binary>> = Chunk,
+    %% 8 is size of ChunkSize & SubSize
+    OpcodeSize = Size - SubSize - 8,
     <<Opcodes:OpcodeSize/binary, _Align/binary>> = Code,
-    parseChunks(Rest, [{code, parseCodeInfo(Info), Opcodes} | Acc]);
-parseChunks([{"StrT", _Size, <<Strings/binary>>} | Rest], Acc) ->
-    parseChunks(Rest, [{string, binary_to_list(Strings)} | Acc]);
-parseChunks([{"Attr", Size, Chunk} | Rest], Acc) ->
+    parse_chunks(Rest, [{code, parse_code_info(Info), Opcodes} | Acc]);
+parse_chunks([{"StrT", _Size, <<Strings/binary>>} | Rest], Acc) ->
+    parse_chunks(Rest, [{string, binary_to_list(Strings)} | Acc]);
+parse_chunks([{"Attr", Size, Chunk} | Rest], Acc) ->
     <<Bin:Size/binary, _Pad/binary>> = Chunk,
-    Attribs = binary_to_term(Bin),
-    parseChunks(Rest, [{attributes, Attribs} | Acc]);
-parseChunks([{"CInf", Size, Chunk} | Rest], Acc) ->
+    Attributes = binary_to_term(Bin),
+    parse_chunks(Rest, [{attributes, Attributes} | Acc]);
+parse_chunks([{"CInf", Size, Chunk} | Rest], Acc) ->
     <<Bin:Size/binary, _Pad/binary>> = Chunk,
     CInfo = binary_to_term(Bin),
-    parseChunks(Rest, [{compile_info, CInfo} | Acc]);
-parseChunks([{"LitT", _Chunksize, <<_CompressedTableSize:32, Compressed/binary>>} | Rest], Acc) ->
+    parse_chunks(Rest, [{compile_info, CInfo} | Acc]);
+parse_chunks([{"LitT", _ChunkSize, <<_CompressedTableSize:32, Compressed/binary>>} | Rest], Acc) ->
     <<_NumLiterals:32, Table/binary>> = zlib:uncompress(Compressed),
-    Literals = parseLiterals(Table),
-    parseChunks(Rest, [{literals, Literals} | Acc]);
-parseChunks([{"Abst", _Chunksize, <<>>} | Rest], Acc) ->
-    parseChunks(Rest, Acc);
-parseChunks([{"Abst", _Chunksize, <<AbstractCode/binary>>} | Rest], Acc) ->
-    parseChunks(Rest, [{abstract_code, binary_to_term(AbstractCode)} | Acc]);
-parseChunks([Chunk | Rest], Acc) ->
-    parseChunks(Rest, [Chunk | Acc]);
-parseChunks([], Acc) ->
+    Literals = parse_literals(Table),
+    parse_chunks(Rest, [{literals, Literals} | Acc]);
+parse_chunks([{"Abst", _ChunkSize, <<>>} | Rest], Acc) ->
+    parse_chunks(Rest, Acc);
+parse_chunks([{"Abst", _ChunkSize, <<AbstractCode/binary>>} | Rest], Acc) ->
+    parse_chunks(Rest, [{abstract_code, binary_to_term(AbstractCode)} | Acc]);
+parse_chunks([Chunk | Rest], Acc) ->
+    parse_chunks(Rest, [Chunk | Acc]);
+parse_chunks([], Acc) ->
     Acc.
 
-parseExports(<<Function:32/integer, Arity:32/integer, Label:32/integer, Rest/binary>>) ->
-    [{Function, Arity, Label} | parseExports(Rest)];
-parseExports(_Alignment) ->
+parse_exports(<<Function:32/integer, Arity:32/integer, Label:32/integer, Rest/binary>>) ->
+    [{Function, Arity, Label} | parse_exports(Rest)];
+parse_exports(_Alignment) ->
     [].
 
-parseAtoms(<<Atomlength, Atom:Atomlength/binary, Rest/binary>>) when Atomlength > 0 ->
+parseAtoms(<<AtomLen, Atom:AtomLen/binary, Rest/binary>>) when AtomLen > 0 ->
     [list_to_atom(binary_to_list(Atom)) | parseAtoms(Rest)];
 parseAtoms(_Alignment) ->
     [].
 
-parseCodeInfo(<<Instructionset:32/integer, OpcodeMax:32/integer, NumberOfLabels:32/integer, NumberOfFunctions:32/integer, Rest/binary>>) ->
+parse_code_info(<<InstructionSet:32/integer, OpcodeMax:32/integer, NumberOfLabels:32/integer, NumOfFns:32/integer, Rest/binary>>) ->
     Left = case Rest of
                <<>> ->
                    [];
                _ ->
-                   [{newinfo, Rest}]
+                   [{new_info, Rest}]
            end,
-    [{instructionset, Instructionset}, {opcodemax, OpcodeMax}, {numoflabels, NumberOfLabels}, {numoffunctions, NumberOfFunctions} | Left].
+    [{instruction_set, InstructionSet}, {opcode_max, OpcodeMax}, {num_of_labels, NumberOfLabels}, {num_of_functions, NumOfFns} | Left].
 
-parseLiterals(<<Size:32, Literal:Size/binary, Tail/binary>>) ->
-    [binary_to_term(Literal) | parseLiterals(Tail)];
-parseLiterals(<<>>) ->
+parse_literals(<<Size:32, Literal:Size/binary, Tail/binary>>) ->
+    [binary_to_term(Literal) | parse_literals(Tail)];
+parse_literals(<<>>) ->
     [].

@@ -27,8 +27,7 @@ false : {token, {false, TokenLine}}.
 
 Erlang code.
 
-drop_quotes([$" | QuotedString]) ->
-    lists:droplast(QuotedString).
+drop_quotes([$" | QuotedString]) -> lists:droplast(QuotedString).
 
 fixchars([$\\, $" | Rest]) ->
     [$"  | fixchars(Rest)];

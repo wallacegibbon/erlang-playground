@@ -8,10 +8,10 @@ display(Fmt, Arguments) ->
 display(String) ->
     io:format("Display:" ++ String ++ "~n").
 
-returnChange(Payment) ->
+return_change(Payment) ->
     io:format("Machine:Returned ~w in change~n", [Payment]).
 
-dropCup() ->
+drop_cup() ->
     io:format("Machine:Dropped Cup.~n").
 
 prepare(Type) ->

@@ -11,16 +11,16 @@ loop(Name, Mod, OldState) ->
             From ! {Name, ack},
             loop(Name, NewCallBackMod, OldState);
         {From, Request} ->
-            {Response, NewState} = Mod:handle(Request, OldState),
-            From ! {Name, Response},
+            {Resp, NewState} = Mod:handle(Request, OldState),
+            From ! {Name, Resp},
             loop(Name, Mod, NewState)
     end.
 
-rpc(Name, Request) ->
-    Name ! {self(), Request},
+rpc(Name, Req) ->
+    Name ! {self(), Req},
     receive
-        {Name, Response} ->
-            Response
+        {Name, Resp} ->
+            Resp
     end.
 
 swap_code(Name, Mod) ->

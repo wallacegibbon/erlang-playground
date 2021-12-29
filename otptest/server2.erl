@@ -7,24 +7,24 @@ start(Name, Mod) ->
 
 loop(Name, Mod, OldState) ->
     receive
-        {From, Request} ->
-            try Mod:handle(Request, OldState) of
-                {Response, NewState} ->
-                    From ! {Name, ok, Response},
+        {From, Req} ->
+            try Mod:handle(Req, OldState) of
+                {Resp, NewState} ->
+                    From ! {Name, ok, Resp},
                     loop(Name, Mod, NewState)
             catch
                 _:Why ->
-                    io:format("Server ~p request ~p ~ncaused exception ~p~n", [Name, Request, Why]),
+                    io:format("Server ~p request ~p ~ncaused exception ~p~n", [Name, Req, Why]),
                     From ! {Name, crash},
                     loop(Name, Mod, OldState)
             end
     end.
 
-rpc(Name, Request) ->
-    Name ! {self(), Request},
+rpc(Name, Req) ->
+    Name ! {self(), Req},
     receive
-        {Name, ok, Response} ->
-            Response;
+        {Name, ok, Resp} ->
+            Resp;
         {Name, crash} ->
             exit(rpc)
     end.

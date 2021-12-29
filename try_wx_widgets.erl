@@ -1,4 +1,4 @@
--module(tryWxWidgets).
+-module(try_wx_widgets).
 
 %% For more infomation about the wx module, you can see the demo by invoking `wx:demo()`
 
@@ -11,11 +11,11 @@ start() ->
     Frame = wxFrame:new(Wx, -1, "Hello, Wallace"),
     wxFrame:show(Frame),
 
-    statusBar(Frame),
-    menuBar(Frame),
+    status_bar(Frame),
+    menu_bar(Frame),
     ok.
 
-statusBar(Frame) ->
+status_bar(Frame) ->
     wxFrame:createStatusBar(Frame),
     wxFrame:setStatusText(Frame, "no message yet."),
 
@@ -26,7 +26,7 @@ statusBar(Frame) ->
     wxStatusBar:popStatusText(StatusBar),
     ok.
 
-menuBar(Frame) ->
+menu_bar(Frame) ->
     MenuBar = wxMenuBar:new(),
     wxFrame:setMenuBar(Frame, MenuBar),
     Menu = wxMenu:new(),
@@ -36,15 +36,15 @@ menuBar(Frame) ->
     Environment = wx:get_env(),
     spawn_link(fun () ->
                        wx:set_env(Environment),
-                       listenCommand(Frame)
+                       listen_cmd(Frame)
                end),
     ok.
 
-listenCommand(F) ->
+listen_cmd(F) ->
     wxFrame:connect(F, command_menu_selected),
-    listenCommandLoop(F).
+    listen_cmd_loop(F).
 
-listenCommandLoop(F) ->
+listen_cmd_loop(F) ->
     receive
         #wx{id = 400} ->
             wxFrame:setStatusText(F, "trying to close window");
@@ -52,7 +52,7 @@ listenCommandLoop(F) ->
             T = io_lib:format("unknown command (id: ~w)", [Id]),
             wxFrame:setStatusText(F, T)
     end,
-    listenCommandLoop(F).
+    listen_cmd_loop(F).
 
 sleep(Milliseconds) ->
     receive after Milliseconds -> ok end.
