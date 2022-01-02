@@ -19,7 +19,7 @@ flatten2([], Tail) ->
 %% this is the flatten based on process
 %%----------------------------------------------------------------------
 flatten1(Lst) when is_list(Lst) ->
-    Pid = spawn(fun () -> collector([]) end),
+    Pid = spawn(fun() -> collector([]) end),
     flatten1(Lst, Pid),
     Ref = make_ref(),
     Pid ! {self(), Ref},

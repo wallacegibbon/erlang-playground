@@ -13,7 +13,7 @@ parse_transform(AST, _Options) ->
 -define(FUNCTION(Clauses), {function, Label, Name, Arity, Clauses}).
 
 json([?FUNCTION(Clauses) | Rest], Parsed) ->
-    json(Rest, [?FUNCTION((json_clauses(Clauses))) | Parsed]);
+    json(Rest, [?FUNCTION(json_clauses(Clauses)) | Parsed]);
 json([Other | Rest], Parsed) ->
     json(Rest, [Other | Parsed]);
 json([], Parsed) ->
@@ -61,6 +61,9 @@ parse_json({nil, Line}) ->
     {nil, Line}.
 
 parse_json_fields([{remote, L1, Key, Value} | Rest], Line) ->
-    {cons, L1, {tuple, L1, [parse_json(Key), parse_json(Value)]}, parse_json_fields(Rest, Line)};
+    {cons,
+     L1,
+     {tuple, L1, [parse_json(Key), parse_json(Value)]},
+     parse_json_fields(Rest, Line)};
 parse_json_fields([], L) ->
     {nil, L}.

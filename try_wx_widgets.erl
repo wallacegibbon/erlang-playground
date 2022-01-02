@@ -34,9 +34,9 @@ menu_bar(Frame) ->
     MenuItem = wxMenuItem:new([{id, 400}, {text, "&Quit"}]),
     wxMenu:append(Menu, MenuItem),
     Environment = wx:get_env(),
-    spawn_link(fun () ->
-                       wx:set_env(Environment),
-                       listen_cmd(Frame)
+    spawn_link(fun() ->
+                  wx:set_env(Environment),
+                  listen_cmd(Frame)
                end),
     ok.
 
@@ -55,4 +55,6 @@ listen_cmd_loop(F) ->
     listen_cmd_loop(F).
 
 sleep(Milliseconds) ->
-    receive after Milliseconds -> ok end.
+    receive after Milliseconds ->
+        ok
+    end.

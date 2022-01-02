@@ -4,10 +4,13 @@
 
 all_names() ->
     server3:rpc(name_server, all_names).
+
 delete(Name) ->
     server3:rpc(name_server, {delete, Name}).
+
 add(Name, Place) ->
     server3:rpc(name_server, {add, Name, Place}).
+
 find(Name) ->
     server3:rpc(name_server, {find, Name}).
 

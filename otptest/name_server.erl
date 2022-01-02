@@ -4,6 +4,7 @@
 
 add(Name, Place) ->
     server3:rpc(name_server, {add, Name, Place}).
+
 find(Name) ->
     server3:rpc(name_server, {find, Name}).
 
