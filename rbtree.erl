@@ -33,6 +33,7 @@ insert(NewV, {node, Color, V, L, R}, CmpFn) ->
             false ->
                 {node, Color, V, L, insert(NewV, R, CmpFn)}
         end,
-    balance(NewTree);
+    {node, _, V1, L1, R1} = balance(NewTree),
+    {node, black, V1, L1, R1};
 insert(NewValue, leaf, _) ->
-    {node, red, NewValue, leaf, leaf}.
+    {node, black, NewValue, leaf, leaf}.
