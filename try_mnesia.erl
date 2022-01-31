@@ -34,12 +34,10 @@ test_read() ->
     {atomic, _} = mnesia:transaction(fun test_read_sub/0).
 
 test_read_sub() ->
-    [Inc] =
-        qlc:e(
-            qlc:q([Inc || #blah{item = apple, value = Inc} <- mnesia:table(blah)])),
-    [R1] =
-        qlc:e(
-            qlc:q([X || X <- mnesia:table(shop)])),
+    QH1 = qlc:q([Inc || #blah{item = apple, value = Inc} <- mnesia:table(blah)]),
+    [Inc] = qlc:e(QH1),
+    QH2 = qlc:q([X || X <- mnesia:table(shop)]),
+    [R1] = qlc:e(QH2),
     fmt("[~w] qlc in, ~p~n", [self(), R1]),
     sleep(1000),
     mnesia:write(#shop{item = apple,
@@ -48,9 +46,8 @@ test_read_sub() ->
     %fmt("[~w] sub, try to write table shop~n", [self()]),
     %mnesia:write(#shop{item=apple,quantity=10,cost=Inc}),
     sleep(1000),
-    [R2] =
-        qlc:e(
-            qlc:q([X || X <- mnesia:table(shop)])),
+    QH3 = qlc:q([X || X <- mnesia:table(shop)]),
+    [R2] = qlc:e(QH3),
     fmt("[~w] qlc out, ~p~n", [self(), R2]),
     ok.
 
