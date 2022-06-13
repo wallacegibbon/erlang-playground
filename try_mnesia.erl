@@ -1,5 +1,4 @@
 -module(try_mnesia).
-
 -include_lib("stdlib/include/qlc.hrl").
 
 -compile(export_all).
@@ -12,9 +11,7 @@ init() ->
     ok = mnesia:start(),
     {atomic, ok} = mnesia:create_table(shop, [{attributes, record_info(fields, shop)}]),
     {atomic, ok} = mnesia:create_table(blah, [{attributes, record_info(fields, blah)}]),
-    mnesia:dirty_write(#shop{item = apple,
-                             quantity = 10,
-                             cost = 20}),
+    mnesia:dirty_write(#shop{item = apple, quantity = 10, cost = 20}),
     mnesia:dirty_write(#blah{item = apple, value = 2}),
     ok.
 

@@ -1,5 +1,4 @@
 -module(name_server1).
-
 -export([add/2, all_names/0, delete/1, find/1, handle/2, init/0]).
 
 all_names() ->

@@ -1,5 +1,4 @@
 -module(calculator).
-
 -export([generate_code/1, interpret/2, run/1]).
 
 interpret(['+' | Rest], [Op2, Op1 | Stack]) ->

@@ -1,5 +1,4 @@
 -module(hardware).
-
 -compile(export_all).
 
 display(Fmt, Arguments) ->

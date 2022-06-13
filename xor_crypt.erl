@@ -1,5 +1,4 @@
 -module(xor_crypt).
-
 -export([transform/2]).
 
 transform(Content, Key) when is_binary(Content), is_binary(Key), size(Key) > 0 ->

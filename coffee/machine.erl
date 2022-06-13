@@ -1,10 +1,7 @@
 -module(machine).
-
--behaviour(gen_statem).
-
--export([start_link/0, americano/0, cappuccino/0, espresso/0, tea/0, cancel/0,
-         cup_removed/0, pay/1]).
+-export([start_link/0, americano/0, cappuccino/0, espresso/0, tea/0, cancel/0, cup_removed/0, pay/1]).
 -export([callback_mode/0, init/1, payment/3, remove/3, selection/3]).
+-behaviour(gen_statem).
 
 -define(TIMEOUT, 10000).
 
@@ -45,10 +42,7 @@ selection(cast, _Other, LoopData) ->
 payment(cast, {pay, Coin}, {Type, Price, Paid}) when Coin + Paid < Price ->
     NewPaid = Coin + Paid,
     hardware:display("Please pay:~w", [Price - NewPaid]),
-    {next_state,
-     payment,
-     {Type, Price, NewPaid},
-     {timeout, ?TIMEOUT, expired_waiting_for_more}};
+    {next_state, payment, {Type, Price, NewPaid}, {timeout, ?TIMEOUT, expired_waiting_for_more}};
 payment(cast, {pay, Coin}, {Type, Price, Paid}) when Coin + Paid >= Price ->
     NewPaid = Coin + Paid,
     hardware:display("Preparing Drink."),

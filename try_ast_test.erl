@@ -1,5 +1,4 @@
 -module(try_ast_test).
-
 -compile({parse_transform, try_ast}).
 
 -export([test1/1, test2/0]).

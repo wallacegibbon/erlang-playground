@@ -2,7 +2,6 @@
 %% Only Leading JSON is parsed.
 
 -module(try_ast).
-
 -export([parse_transform/2]).
 
 parse_transform(AST, _Options) ->
@@ -61,9 +60,6 @@ parse_json({nil, Line}) ->
     {nil, Line}.
 
 parse_json_fields([{remote, L1, Key, Value} | Rest], Line) ->
-    {cons,
-     L1,
-     {tuple, L1, [parse_json(Key), parse_json(Value)]},
-     parse_json_fields(Rest, Line)};
+    {cons, L1, {tuple, L1, [parse_json(Key), parse_json(Value)]}, parse_json_fields(Rest, Line)};
 parse_json_fields([], L) ->
     {nil, L}.

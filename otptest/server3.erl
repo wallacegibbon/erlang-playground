@@ -1,9 +1,8 @@
 -module(server3).
-
 -export([rpc/2, start/2, swap_code/2]).
 
 start(Name, Mod) ->
-    register(Name, spawn(fun() -> loop(Name, Mod, Mod:init()) end)).
+    register(Name, spawn(fun () -> loop(Name, Mod, Mod:init()) end)).
 
 loop(Name, Mod, OldState) ->
     receive

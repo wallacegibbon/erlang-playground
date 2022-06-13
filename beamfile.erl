@@ -9,7 +9,6 @@
 %% The IFF specification suggests this tag for future extensions.
 
 -module(beamfile).
-
 -export([read/1]).
 
 read(Filename) ->
@@ -37,8 +36,7 @@ parse_chunks([{"Atom", _Size, <<_NumOfAtoms:32/integer, Atoms/binary>>} | Rest],
     parse_chunks(Rest, [{atoms, parseAtoms(Atoms)} | Acc]);
 parse_chunks([{"AtU8", Size, Atoms} | Rest], Acc) ->
     parse_chunks([{"Atom", Size, Atoms} | Rest], Acc);
-parse_chunks([{"ExpT", _Size, <<_NumOfEntries:32/integer, Exports/binary>>} | Rest],
-             Acc) ->
+parse_chunks([{"ExpT", _Size, <<_NumOfEntries:32/integer, Exports/binary>>} | Rest], Acc) ->
     parse_chunks(Rest, [{exports, parse_exports(Exports)} | Acc]);
 parse_chunks([{"Code", Size, <<SubSize:32/integer, Chunk/binary>>} | Rest], Acc) ->
     <<Info:SubSize/binary, Code/binary>> = Chunk,
@@ -56,9 +54,7 @@ parse_chunks([{"CInf", Size, Chunk} | Rest], Acc) ->
     <<Bin:Size/binary, _Pad/binary>> = Chunk,
     CInfo = binary_to_term(Bin),
     parse_chunks(Rest, [{compile_info, CInfo} | Acc]);
-parse_chunks([{"LitT", _ChunkSize, <<_CompressedTableSize:32, Compressed/binary>>}
-              | Rest],
-             Acc) ->
+parse_chunks([{"LitT", _ChunkSize, <<_CompressedTableSize:32, Compressed/binary>>} | Rest], Acc) ->
     <<_NumLiterals:32, Table/binary>> = zlib:uncompress(Compressed),
     Literals = parse_literals(Table),
     parse_chunks(Rest, [{literals, Literals} | Acc]);
@@ -81,23 +77,13 @@ parseAtoms(<<AtomLen, Atom:AtomLen/binary, Rest/binary>>) when AtomLen > 0 ->
 parseAtoms(_Alignment) ->
     [].
 
-parse_code_info(<<InstructionSet:32/integer,
-                  OpcodeMax:32/integer,
-                  NumberOfLabels:32/integer,
-                  NumOfFns:32/integer,
-                  Rest/binary>>) ->
-    Left =
-        case Rest of
-            <<>> ->
-                [];
-            _ ->
-                [{new_info, Rest}]
-        end,
-    [{instruction_set, InstructionSet},
-     {opcode_max, OpcodeMax},
-     {num_of_labels, NumberOfLabels},
-     {num_of_functions, NumOfFns}
-     | Left].
+parse_code_info(<<InstructionSet:32/integer, OpcodeMax:32/integer, NumberOfLabels:32/integer, NumOfFns:32/integer, Rest/binary>>) ->
+    Left = case Rest of
+               <<>> -> [];
+               _ -> [{new_info, Rest}]
+           end,
+    [{instruction_set, InstructionSet}, {opcode_max, OpcodeMax}, {num_of_labels, NumberOfLabels},
+     {num_of_functions, NumOfFns} | Left].
 
 parse_literals(<<Size:32, Literal:Size/binary, Tail/binary>>) ->
     [binary_to_term(Literal) | parse_literals(Tail)];

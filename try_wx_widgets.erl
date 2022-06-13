@@ -1,7 +1,5 @@
--module(try_wx_widgets).
-
 %% For more infomation about the wx module, you can see the demo by invoking `wx:demo()`
-
+-module(try_wx_widgets).
 -export([start/0]).
 
 -include_lib("wx/include/wx.hrl").
@@ -20,9 +18,9 @@ status_bar(Frame) ->
     wxFrame:setStatusText(Frame, "no message yet."),
 
     StatusBar = wxFrame:getStatusBar(Frame),
-    %sleep(2000),
+                                                %sleep(2000),
     wxStatusBar:pushStatusText(StatusBar, "Hello, world"),
-    %sleep(2000),
+                                                %sleep(2000),
     wxStatusBar:popStatusText(StatusBar),
     ok.
 
@@ -34,9 +32,9 @@ menu_bar(Frame) ->
     MenuItem = wxMenuItem:new([{id, 400}, {text, "&Quit"}]),
     wxMenu:append(Menu, MenuItem),
     Environment = wx:get_env(),
-    spawn_link(fun() ->
-                  wx:set_env(Environment),
-                  listen_cmd(Frame)
+    spawn_link(fun () ->
+                       wx:set_env(Environment),
+                       listen_cmd(Frame)
                end),
     ok.
 
@@ -55,6 +53,4 @@ listen_cmd_loop(F) ->
     listen_cmd_loop(F).
 
 sleep(Milliseconds) ->
-    receive after Milliseconds ->
-        ok
-    end.
+    receive after Milliseconds -> ok end.
