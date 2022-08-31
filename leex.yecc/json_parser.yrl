@@ -30,3 +30,4 @@ Erlang code.
 
 get_val({_, _, Val}) -> Val;
 get_val({Val, _}) -> Val.
+

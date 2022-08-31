@@ -28,3 +28,4 @@ mul_vs(V, S) -> lists:map(fun (E) -> E * S end, V).
 -spec add_vv(vector(), vector()) -> vector().
 add_vv([E1 | ER1], [E2 | ER2]) -> [E1 + E2 | add_vv(ER1, ER2)];
 add_vv([], []) -> [].
+

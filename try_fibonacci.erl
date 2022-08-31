@@ -11,10 +11,11 @@ fib1(N) -> fib1(N - 1) + fib1(N - 2).
 fib2(1) -> 1;
 fib2(2) -> 1;
 fib2(N) ->
-    [X, _] = matrix:mul_mv(fib_fact(N - 2), [1, 1]),
-    X.
+	[X, _] = matrix:mul_mv(fib_fact(N - 2), [1, 1]),
+	X.
 
 fib_fact(1) ->
-    [[1, 1], [1, 0]];
+	[[1, 1], [1, 0]];
 fib_fact(N) ->
-    matrix:mul_mm([[1, 1], [1, 0]], fib_fact(N - 1)).
+	matrix:mul_mm([[1, 1], [1, 0]], fib_fact(N - 1)).
+
