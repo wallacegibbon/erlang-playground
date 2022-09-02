@@ -47,7 +47,8 @@ parse_json({float, Line, Float}) ->
 	{float, Line, Float};
 parse_json(
 	{op, Line, '-', {Type, _, N}}
-) when Type =:= integer; Type =:= float ->
+)
+	when Type =:= integer; Type =:= float ->
 	{Type, Line, -N};
 %% true, false, null
 parse_json({atom, Line, true}) ->
@@ -62,9 +63,7 @@ parse_json({nil, Line}) ->
 	{nil, Line}.
 
 parse_json_fields([{remote, L1, Key, Value} | Rest], Line) ->
-	{
-		cons,
-		L1,
+	{cons, L1,
 		{tuple, L1, [parse_json(Key), parse_json(Value)]},
 		parse_json_fields(Rest, Line)
 	};
