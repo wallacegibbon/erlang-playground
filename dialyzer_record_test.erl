@@ -1,4 +1,5 @@
 -module(dialyzer_record_test).
+
 -export([myfn/1, main/0]).
 
 %% To build the dialzyer database:
@@ -11,10 +12,9 @@
 
 -spec myfn([#myrcd{}]) -> boolean().
 myfn(MyRcds) ->
-	lists:any(fun (#myrcd{age = N}) -> N > 30 end, MyRcds).
+  lists:any(fun(#myrcd{age = N}) -> N > 30 end, MyRcds).
 
 main() ->
-	%myfn([{myrcd, "", a}]),
-	myfn([{myrcd, "", 1}]),
-	myfn([]).
-
+  %myfn([{myrcd, "", a}]),
+  myfn([{myrcd, "", 1}]),
+  myfn([]).
