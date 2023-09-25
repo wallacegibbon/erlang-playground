@@ -10,3 +10,4 @@ Mnesia.*/
 *.dot
 *.iml
 .idea
+*.dump
