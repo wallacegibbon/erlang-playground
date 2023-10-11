@@ -12,35 +12,35 @@
 
 -spec calc_single(boolean_fn(), pos_integer()) -> float().
 calc_single(F, N) when is_integer(N), N > 0 ->
-  calc(F, N, 0) / N.
+    calc(F, N, 0) / N.
 
 %% `N rem NumOfCores` got ignored for simplicity since `NumOfCores` is a small integer.
 calc_multi(F, N) when is_integer(N), N > 0 ->
-  NumOfCores = erlang:system_info(logical_processors_available),
-  CountForEachCore = N div NumOfCores,
-  Ns = lists:duplicate(NumOfCores, CountForEachCore),
-  Self = self(),
-  lists:foreach(fun(Count) -> spawn_link(fun() -> Self ! calc(F, Count, 0) / Count end) end,
-                Ns),
-  Results = lists:map(fun(_) -> receive R -> R end end, Ns),
-  lists:sum(Results) / NumOfCores.
+    NumOfCores = erlang:system_info(logical_processors_available),
+    CountForEachCore = N div NumOfCores,
+    Ns = lists:duplicate(NumOfCores, CountForEachCore),
+    Self = self(),
+    lists:foreach(fun(Count) -> spawn_link(fun() -> Self ! calc(F, Count, 0) / Count end) end,
+                  Ns),
+    Results = lists:map(fun(_) -> receive R -> R end end, Ns),
+    lists:sum(Results) / NumOfCores.
 
 calc(_, 0, Acc) ->
-  Acc;
+    Acc;
 calc(F, N, Acc) ->
-  calc(F, N - 1, bool2int(F()) + Acc).
+    calc(F, N - 1, bool2int(F()) + Acc).
 
 bool2int(false) ->
-  0;
+    0;
 bool2int(true) ->
-  1.
+    1.
 
 calc_pi() ->
-  {X, Y} = {rand:uniform(), rand:uniform()},
-  math:sqrt(X * X + Y * Y) < 1.
+    {X, Y} = {rand:uniform(), rand:uniform()},
+    math:sqrt(X * X + Y * Y) < 1.
 
 pi_single(N) ->
-  calc_single(fun calc_pi/0, N) * 4.
+    calc_single(fun calc_pi/0, N) * 4.
 
 pi_multi(N) ->
-  calc_multi(fun calc_pi/0, N) * 4.
+    calc_multi(fun calc_pi/0, N) * 4.
